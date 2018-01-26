@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Projet-Android-L3</string>
+    <string name="mon_profil">Mon profil</string>
+    <string name="lister_annonces">Lister annonces</string>
+    <string name="d_poser_annonce">Déposer annonce</string>
+    <string name="voir_annonce">Voir annonce</string>
 </resources>
