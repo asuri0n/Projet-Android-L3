@@ -6,42 +6,54 @@
     android:layout_height="match_parent"
     tools:context="com.example.asuri.projet_android_l3.MainActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#c4c4c4" >
+    <Button
+        android:id="@+id/BtnVoirAnnonce"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:layout_marginEnd="148dp"
+        android:layout_marginStart="148dp"
+        android:layout_marginTop="70dp"
+        android:text="Voir annonce"
+        app:layout_constraintBottom_toTopOf="@+id/BtnDepoAnnonce"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:layout_gravity="center">
+    <Button
+        android:id="@+id/BtnDepoAnnonce"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:layout_marginEnd="148dp"
+        android:layout_marginStart="148dp"
+        android:text="Déposer annonce"
+        app:layout_constraintBottom_toTopOf="@+id/BtnListAnnonce"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-            <Button
-                android:id="@+id/buttonVoirAnnonce"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/voir_annonce" />
+    <Button
+        android:id="@+id/BtnListAnnonce"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:layout_marginEnd="148dp"
+        android:layout_marginStart="148dp"
+        android:text="Lister Annonces"
+        app:layout_constraintBottom_toTopOf="@+id/BtnMonProfil"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-            <Button
-                android:id="@+id/buttonDeposerAnnonce"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/d_poser_annonce" />
+    <Button
+        android:id="@+id/BtnMonProfil"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="132dp"
+        android:layout_marginEnd="148dp"
+        android:layout_marginStart="148dp"
+        android:text="Mon Profil"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-            <Button
-                android:id="@+id/buttonListerAnnonces"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/lister_annonces" />
-
-            <Button
-                android:id="@+id/buttonMonProfil"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/mon_profil" />
-        </LinearLayout>
-
-    </LinearLayout>
 </android.support.constraint.ConstraintLayout>
