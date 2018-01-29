@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity {
     Button btnDeposerAnnonce;
     Button btnListerAnnonce;
     Button btnMonProfil;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,13 +26,13 @@ public class MainActivity extends AppCompatActivity {
         this.btnVoirAnnonce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                voirAnnonce(v);
+                newIntent(v, VoirAnnonceActivity.class);
             }
         });
     }
 
-    public void voirAnnonce(View view){
-        Intent intent=new Intent(this,VoirAnnonceActivity.class);
+    public void newIntent(View view, Class activity){
+        Intent intent=new Intent(this,activity);
         startActivity(intent);
     }
 }

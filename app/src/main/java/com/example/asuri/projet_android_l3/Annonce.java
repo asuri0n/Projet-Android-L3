@@ -1,4 +1,6 @@
 package com.example.asuri.projet_android_l3;
+import android.util.Log;
+
 import java.util.Date;
 
 /**
