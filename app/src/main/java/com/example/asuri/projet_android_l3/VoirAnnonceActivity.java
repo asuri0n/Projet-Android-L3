@@ -45,10 +45,7 @@ public class VoirAnnonceActivity extends AppCompatActivity {
         String myurl = "https://ensweb.users.info.unicaen.fr/android-api/mock-api/completeAd.json";
 
         Annonce annonce = new Annonce();
-        new GetJSONFromUrl(annonce).execute(myurl);
-
-        this.idAnnonce.setText(annonce.getId());
-        this.titreAnnonce.setText(annonce.getTitre());
+        new GetJSONFromUrl(this, annonce).execute(myurl);
     }
 }
 

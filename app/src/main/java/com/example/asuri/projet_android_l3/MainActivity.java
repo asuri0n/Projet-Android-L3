@@ -18,20 +18,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.btnVoirAnnonce=findViewById(R.id.BtnVoirAnnonce);
-        this.btnDeposerAnnonce=findViewById(R.id.BtnDepoAnnonce);
-        this.btnListerAnnonce=findViewById(R.id.BtnListAnnonce);
-        this.btnMonProfil=findViewById(R.id.BtnMonProfil);
+        this.btnVoirAnnonce = findViewById(R.id.BtnVoirAnnonce);
+        this.btnDeposerAnnonce = findViewById(R.id.BtnDepoAnnonce);
+        this.btnListerAnnonce = findViewById(R.id.BtnListAnnonce);
+        this.btnMonProfil = findViewById(R.id.BtnMonProfil);
 
         this.btnVoirAnnonce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newIntent(v, VoirAnnonceActivity.class);
+                newIntent(VoirAnnonceActivity.class);
             }
         });
     }
 
-    public void newIntent(View view, Class activity){
+    public void newIntent(Class activity){
         Intent intent=new Intent(this,activity);
         startActivity(intent);
     }
