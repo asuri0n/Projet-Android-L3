@@ -12,8 +12,6 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import static java.lang.Thread.sleep;
-
 /**
  * Created by asuri on 28/01/2018.
  */
