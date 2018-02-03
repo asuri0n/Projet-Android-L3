@@ -3,6 +3,8 @@ package com.example.asuri.projet_android_l3;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.android.volley.toolbox.Volley;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,11 +31,27 @@ class GetJSONFromUrl extends AsyncTask<String, Integer, JSONObject> {
     @Override
     protected void onPostExecute(JSONObject result) {
         try {
-            VoirAnnonceActivity.idAnnonce.setText(result.getJSONObject("response").getString("id"));
-            VoirAnnonceActivity.titreAnnonce.setText(result.getJSONObject("response").getString("titre"));
-            VoirAnnonceActivity.descriptionAnnonce.setText(result.getJSONObject("response").getString("description"));
-            VoirAnnonceActivity.prixAnnonce.setText(result.getJSONObject("response").getString("prix"));
-            VoirAnnonceActivity.imgAnnonce.setImageResource(R.drawable.annonce);
+            annonce.setId(result.getJSONObject("response").getString("id"));
+            annonce.setTitre(result.getJSONObject("response").getString("titre"));
+            annonce.addImage(result.getJSONObject("response").getString("images"));
+            annonce.setPrix(result.getJSONObject("response").getInt("prix"));
+            annonce.setCp(result.getJSONObject("response").getString("cp"));
+            annonce.setVille(result.getJSONObject("response").getString("ville"));
+            annonce.setDescription(result.getJSONObject("response").getString("description"));
+            annonce.setDate(result.getJSONObject("response").getString("date"));
+            annonce.setPseudo(result.getJSONObject("response").getString("pseudo"));
+            annonce.setEmailContact(result.getJSONObject("response").getString("emailContact"));
+            annonce.setTelContact(result.getJSONObject("response").getString("telContact"));
+
+            VoirAnnonceActivity.titreAnnonce.setText(annonce.getTitre());
+            VoirAnnonceActivity.imgAnnonce.setImageResource(R.drawable.annonce); // En attendant
+            VoirAnnonceActivity.prixAnnonce.setText(annonce.getPrix()+"€");
+            VoirAnnonceActivity.adresseAnnonce.setText(annonce.getCp() + " " + annonce.getVille());
+            VoirAnnonceActivity.descriptionAnnonce.setText(annonce.getDescription());
+            VoirAnnonceActivity.dateAnnonce.setText(annonce.getFormatedDate(annonce.getDate()));
+            VoirAnnonceActivity.contactAnnonce.setText("Contacter "+annonce.getPseudo());
+            VoirAnnonceActivity.mailAnnonce.setText(annonce.getEmailContact());
+            VoirAnnonceActivity.telAnnonce.setText(annonce.getTelContact());
         } catch (JSONException e) {
             e.printStackTrace();
         }

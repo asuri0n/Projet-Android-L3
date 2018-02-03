@@ -10,24 +10,38 @@ public class VoirAnnonceActivity extends AppCompatActivity {
 
     //association avec la vue
 
-    TextView idAnnonce;
+    String idAnnonce;
+    String pseudo;
+
     TextView titreAnnonce;
-    TextView descriptionAnnonce;
     ImageView imgAnnonce;
     TextView prixAnnonce;
     TextView adresseAnnonce;
+    TextView descriptionAnnonce;
+
+    TextView dateAnnonce;
+    TextView contactAnnonce;
+    TextView mailAnnonce;
+    TextView telAnnonce;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voir_annonce);
 
-        this.idAnnonce = findViewById(R.id.idAnnonce);
+        this.idAnnonce = "3mdzx";
+        this.pseudo = "Carl";
+
         this.titreAnnonce = findViewById(R.id.titreAnnonce);
-        this.descriptionAnnonce = findViewById(R.id.descriptionAnnonce);
         this.imgAnnonce = findViewById(R.id.imgAnnonce);
         this.prixAnnonce = findViewById(R.id.prixAnnonce);
         this.adresseAnnonce = findViewById(R.id.adresseAnnonce);
+        this.descriptionAnnonce = findViewById(R.id.descriptionAnnonce);
+
+        this.dateAnnonce = findViewById(R.id.dateAnnonce);
+        this.contactAnnonce = findViewById(R.id.contactAnnonce);
+        this.mailAnnonce = findViewById(R.id.mailAnnonce);
+        this.telAnnonce = findViewById(R.id.telAnnonce);
 
         String myurl = "https://ensweb.users.info.unicaen.fr/android-api/mock-api/completeAd.json";
 
