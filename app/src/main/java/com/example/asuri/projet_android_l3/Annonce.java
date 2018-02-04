@@ -1,9 +1,13 @@
 package com.example.asuri.projet_android_l3;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by thomas on 26/01/2018.
@@ -104,12 +108,15 @@ public class Annonce {
         this.cp = cp;
     }
 
-    public String getImages() {
-        return images.get(0);
+    public String getImage() {
+        int index = new Random().nextInt(this.images.size());
+        return images.get(index);
     }
 
-    public void setImages(List<String> images) {
-        this.images = images;
+    public void setImages(JSONArray imagesArray) throws JSONException {
+        for(int i = 0; i < imagesArray.length(); i++){
+            this.images.add(imagesArray.get(i).toString());
+        }
     }
 
     public void addImage(String image) {

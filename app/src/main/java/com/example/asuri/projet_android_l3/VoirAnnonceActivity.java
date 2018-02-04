@@ -57,7 +57,7 @@ public class VoirAnnonceActivity extends AppCompatActivity {
     public void setVoirAnnonceValues(JSONObject json) throws JSONException {
         annonce.setId(json.getJSONObject("response").getString("id"));
         annonce.setTitre(json.getJSONObject("response").getString("titre"));
-        annonce.addImage(json.getJSONObject("response").getString("images"));
+        annonce.setImages(json.getJSONObject("response").getJSONArray("images"));
         annonce.setPrix(json.getJSONObject("response").getInt("prix"));
         annonce.setCp(json.getJSONObject("response").getString("cp"));
         annonce.setVille(json.getJSONObject("response").getString("ville"));
@@ -69,7 +69,7 @@ public class VoirAnnonceActivity extends AppCompatActivity {
 
 
         titreAnnonce.setText(annonce.getTitre());
-        imgAnnonce.setImageResource(R.drawable.photo_default); // En attendant
+        Picasso.with(getApplicationContext()).load(annonce.getImage()).into(imgAnnonce);
         prixAnnonce.setText(annonce.getPrix()+"€");
         adresseAnnonce.setText(annonce.getCp() + " " + annonce.getVille());
         descriptionAnnonce.setText(annonce.getDescription());
