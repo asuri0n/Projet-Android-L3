@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.asuri.projet_android_l3">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,8 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".VoirAnnonceActivity"></activity>
+        <activity android:name=".VoirAnnonceActivity" />
+        <activity android:name=".MonProfilActivity" />
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

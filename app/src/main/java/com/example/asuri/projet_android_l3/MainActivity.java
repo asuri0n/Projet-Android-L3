@@ -29,6 +29,12 @@ public class MainActivity extends AppCompatActivity {
                 newIntent(VoirAnnonceActivity.class);
             }
         });
+        this.btnMonProfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newIntent(MonProfilActivity.class);
+            }
+        });
     }
 
     public void newIntent(Class activity){
