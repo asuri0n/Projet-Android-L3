@@ -9,6 +9,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class VoirAnnonceActivity extends AppCompatActivity {
 
     //association avec la vue
@@ -46,11 +49,34 @@ public class VoirAnnonceActivity extends AppCompatActivity {
         // Module picasso pour charger image par défault
         Picasso.with(getApplicationContext()).load(R.drawable.photo_default).into(imgAnnonce);
 
-        
-        RequestQueue queue = Volley.newRequestQueue(this);
         String url = "https://ensweb.users.info.unicaen.fr/android-api/mock-api/completeAdWithImages.json";
         Controller controller = new Controller(this, annonce);
         controller.getJsonURL(url);
+    }
+
+    public void setVoirAnnonceValues(JSONObject json) throws JSONException {
+        annonce.setId(json.getJSONObject("response").getString("id"));
+        annonce.setTitre(json.getJSONObject("response").getString("titre"));
+        annonce.addImage(json.getJSONObject("response").getString("images"));
+        annonce.setPrix(json.getJSONObject("response").getInt("prix"));
+        annonce.setCp(json.getJSONObject("response").getString("cp"));
+        annonce.setVille(json.getJSONObject("response").getString("ville"));
+        annonce.setDescription(json.getJSONObject("response").getString("description"));
+        annonce.setDate(json.getJSONObject("response").getString("date"));
+        annonce.setPseudo(json.getJSONObject("response").getString("pseudo"));
+        annonce.setEmailContact(json.getJSONObject("response").getString("emailContact"));
+        annonce.setTelContact(json.getJSONObject("response").getString("telContact"));
+
+
+        titreAnnonce.setText(annonce.getTitre());
+        imgAnnonce.setImageResource(R.drawable.photo_default); // En attendant
+        prixAnnonce.setText(annonce.getPrix()+"€");
+        adresseAnnonce.setText(annonce.getCp() + " " + annonce.getVille());
+        descriptionAnnonce.setText(annonce.getDescription());
+        dateAnnonce.setText(annonce.getFormatedDate(annonce.getDate()));
+        contactAnnonce.setText("Contacter "+annonce.getPseudo());
+        mailAnnonce.setText(annonce.getEmailContact());
+        telAnnonce.setText(annonce.getTelContact());
     }
 }
 

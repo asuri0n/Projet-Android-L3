@@ -1,5 +1,6 @@
 package com.example.asuri.projet_android_l3;
 
+import android.text.format.DateUtils;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -10,6 +11,9 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 /**
  * Created by asuri on 04/02/2018.
  */
@@ -18,6 +22,9 @@ public class Controller {
 
     VoirAnnonceActivity voirAnnonceActivity;
     Annonce annonce;
+
+    Timestamp timestamp1;
+    Date date;
 
     public Controller(VoirAnnonceActivity voirAnnonceActivity, Annonce annonce) {
         this.voirAnnonceActivity = voirAnnonceActivity;
@@ -42,37 +49,19 @@ public class Controller {
     }
 
     public void getJsonURL(String url) {
+        date = new Date();
+        timestamp1 = new Timestamp(date.getTime());
+
         getResponse(Request.Method.GET, url, null, new VolleyCallback() {
             @Override
             public void onSuccessResponse(String result) {
+                date = new Date();
+                Timestamp timestamp2 = new Timestamp(date.getTime());
+                long milliseconds = timestamp2.getTime() - timestamp1.getTime();
                 try {
                     JSONObject json = new JSONObject(result);
-                    Toast.makeText(voirAnnonceActivity.getApplicationContext(), json.getJSONObject("response").getString("titre") + "", Toast.LENGTH_LONG).show();
-                    // do your work with response object
-
-                    annonce.setId(json.getJSONObject("response").getString("id"));
-                    annonce.setTitre(json.getJSONObject("response").getString("titre"));
-                    annonce.addImage(json.getJSONObject("response").getString("images"));
-                    annonce.setPrix(json.getJSONObject("response").getInt("prix"));
-                    annonce.setCp(json.getJSONObject("response").getString("cp"));
-                    annonce.setVille(json.getJSONObject("response").getString("ville"));
-                    annonce.setDescription(json.getJSONObject("response").getString("description"));
-                    annonce.setDate(json.getJSONObject("response").getString("date"));
-                    annonce.setPseudo(json.getJSONObject("response").getString("pseudo"));
-                    annonce.setEmailContact(json.getJSONObject("response").getString("emailContact"));
-                    annonce.setTelContact(json.getJSONObject("response").getString("telContact"));
-
-
-                    voirAnnonceActivity.titreAnnonce.setText(annonce.getTitre());
-                    voirAnnonceActivity.imgAnnonce.setImageResource(R.drawable.photo_default); // En attendant
-                    voirAnnonceActivity.prixAnnonce.setText(annonce.getPrix()+"€");
-                    voirAnnonceActivity.adresseAnnonce.setText(annonce.getCp() + " " + annonce.getVille());
-                    voirAnnonceActivity.descriptionAnnonce.setText(annonce.getDescription());
-                    voirAnnonceActivity.dateAnnonce.setText(annonce.getFormatedDate(annonce.getDate()));
-                    voirAnnonceActivity.contactAnnonce.setText("Contacter "+annonce.getPseudo());
-                    voirAnnonceActivity.mailAnnonce.setText(annonce.getEmailContact());
-                    voirAnnonceActivity.telAnnonce.setText(annonce.getTelContact());
-
+                    Toast.makeText(voirAnnonceActivity.getApplicationContext(), "["+json.getJSONObject("response").getString("id")+"] - Chargée en " + milliseconds + " millisecondes", Toast.LENGTH_LONG).show();
+                    voirAnnonceActivity.setVoirAnnonceValues(json);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

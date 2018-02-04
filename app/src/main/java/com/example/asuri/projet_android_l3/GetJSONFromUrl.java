@@ -14,6 +14,13 @@ import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by asuri on 28/01/2018.
+ *
+ *
+ *
+ * ANCIENNE VERSION POUR RECUPERER JSON AVANT UTILISATION VOLLEY
+ *
+ *
+ *
  */
 
 class GetJSONFromUrl extends AsyncTask<String, Integer, JSONObject> {
