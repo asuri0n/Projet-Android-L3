@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="14dp"
+
+        android:id="@+id/imgListeAnnonce"
+        android:paddingBottom="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:contentDescription="TODO" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Devil May Cry"
+        android:textSize="18sp"
+        android:id="@+id/titreListeAnnonce"
+        android:paddingLeft="4dp"
+        android:paddingRight="5dp"
+        android:layout_alignTop="@+id/imgListeAnnonce"
+        android:layout_toRightOf="@+id/imgListeAnnonce"
+        android:layout_toEndOf="@+id/imgListeAnnonce" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:lines="1"
+        android:ellipsize="end"
+        android:paddingLeft="4dp"
+        android:paddingRight="5dp"
+        android:textSize="12sp"
+        android:id="@+id/prixListeAnnonce"
+        android:layout_below="@+id/titreListeAnnonce"
+        android:layout_alignLeft="@+id/titreListeAnnonce"
+        android:layout_alignStart="@+id/titreListeAnnonce"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmallPopupMenu"
+        android:text="Plateform : PS3, XBOX 360"
+        android:id="@+id/descriptionListeAnnonce"
+        android:paddingLeft="4dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="5dp"
+        android:textSize="12sp"
+        android:layout_below="@+id/prixListeAnnonce"
+        android:layout_alignLeft="@+id/prixListeAnnonce"
+        android:layout_alignStart="@+id/prixListeAnnonce" />
+
+</RelativeLayout>

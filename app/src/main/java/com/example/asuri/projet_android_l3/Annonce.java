@@ -149,4 +149,21 @@ public class Annonce {
     public void setEmailContact(String setMailContact) {
         this.emailContact = setMailContact;
     }
+
+    @Override
+    public String toString() {
+        return "Annonce{" +
+                "id='" + id + '\'' +
+                ", titre='" + titre + '\'' +
+                ", description='" + description + '\'' +
+                ", prix=" + prix +
+                ", pseudo='" + pseudo + '\'' +
+                ", telContact='" + telContact + '\'' +
+                ", ville='" + ville + '\'' +
+                ", cp='" + cp + '\'' +
+                ", images=" + images +
+                ", date='" + date + '\'' +
+                ", emailContact='" + emailContact + '\'' +
+                '}';
+    }
 }

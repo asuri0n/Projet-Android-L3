@@ -35,6 +35,12 @@ public class MainActivity extends AppCompatActivity {
                 newIntent(MonProfilActivity.class);
             }
         });
+        this.btnListerAnnonce.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newIntent(ListeAnnoncesActivity.class);
+            }
+        });
     }
 
     public void newIntent(Class activity){
