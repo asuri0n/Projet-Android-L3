@@ -23,12 +23,12 @@ import javax.net.ssl.HttpsURLConnection;
  *
  */
 
-class GetJSONFromUrl extends AsyncTask<String, Integer, JSONObject> {
+class BAKGetJSONFromUrl extends AsyncTask<String, Integer, JSONObject> {
 
     private Annonce annonce;
     private VoirAnnonceActivity VoirAnnonceActivity;
 
-    public GetJSONFromUrl(VoirAnnonceActivity voirAnnonceActivity, Annonce annonce) {
+    public BAKGetJSONFromUrl(VoirAnnonceActivity voirAnnonceActivity, Annonce annonce) {
         this.VoirAnnonceActivity = voirAnnonceActivity;
         this.annonce = annonce;
     }
