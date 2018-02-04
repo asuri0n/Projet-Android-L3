@@ -29,7 +29,9 @@
                 android:maxHeight="225dp"
                 android:background="#c9c9c9"
                 android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="5dp"
+                android:adjustViewBounds="true"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"

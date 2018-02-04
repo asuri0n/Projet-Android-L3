@@ -3,8 +3,6 @@ package com.example.asuri.projet_android_l3;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.android.volley.toolbox.Volley;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -44,7 +42,7 @@ class GetJSONFromUrl extends AsyncTask<String, Integer, JSONObject> {
             annonce.setTelContact(result.getJSONObject("response").getString("telContact"));
 
             VoirAnnonceActivity.titreAnnonce.setText(annonce.getTitre());
-            VoirAnnonceActivity.imgAnnonce.setImageResource(R.drawable.annonce); // En attendant
+            VoirAnnonceActivity.imgAnnonce.setImageResource(R.drawable.photo_default); // En attendant
             VoirAnnonceActivity.prixAnnonce.setText(annonce.getPrix()+"€");
             VoirAnnonceActivity.adresseAnnonce.setText(annonce.getCp() + " " + annonce.getVille());
             VoirAnnonceActivity.descriptionAnnonce.setText(annonce.getDescription());
@@ -56,10 +54,12 @@ class GetJSONFromUrl extends AsyncTask<String, Integer, JSONObject> {
             e.printStackTrace();
         }
     }
+
     @Override
     protected void onProgressUpdate(Integer... progress) {
         //setProgressPercent(progress[0]);
     }
+
     @Override
     protected JSONObject doInBackground(String... urls) {
 
