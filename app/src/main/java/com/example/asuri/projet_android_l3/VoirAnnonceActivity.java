@@ -1,8 +1,11 @@
 package com.example.asuri.projet_android_l3;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -61,6 +64,26 @@ public class VoirAnnonceActivity extends AppCompatActivity {
 
         Controller controller = new Controller(this, annonce);
         controller.getJsonURL(url);
+
+        this.mailAnnonce.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri data = Uri.parse("mailto:"+annonce.getEmailContact());
+                intent.setData(data);
+                startActivity(intent);
+            }
+        });
+
+        this.telAnnonce.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri data = Uri.parse("tel:"+annonce.getTelContact());
+                intent.setData(data);
+                startActivity(intent);
+            }
+        });
     }
 
     public void setVoirAnnonceValues(JSONObject json) throws JSONException {
