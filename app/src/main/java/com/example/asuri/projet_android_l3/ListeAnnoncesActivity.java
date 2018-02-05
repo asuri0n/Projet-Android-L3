@@ -2,6 +2,7 @@ package com.example.asuri.projet_android_l3;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,6 +30,9 @@ public class ListeAnnoncesActivity extends AppCompatActivity {
 
         String url = "https://ensweb.users.info.unicaen.fr/android-api/mock-api/liste.json";
         requestData(url);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     public void requestData(String uri) {
@@ -53,5 +57,15 @@ public class ListeAnnoncesActivity extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(request);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId() == android.R.id.home)
+        {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

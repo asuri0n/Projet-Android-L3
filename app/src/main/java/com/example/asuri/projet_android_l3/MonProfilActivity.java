@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 public class MonProfilActivity extends AppCompatActivity {
 
@@ -13,14 +14,9 @@ public class MonProfilActivity extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         getFragmentManager().beginTransaction().replace(android.R.id.content, new MyPreferenceFragment()).commit();
+
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    @Override
-    public boolean onSupportNavigateUp(){
-        finish();
-        return true;
     }
 
     public static class MyPreferenceFragment extends PreferenceFragment
@@ -31,5 +27,14 @@ public class MonProfilActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences);
         }
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId() == android.R.id.home)
+        {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -84,6 +85,9 @@ public class VoirAnnonceActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     public void setVoirAnnonceValues(JSONObject json) throws JSONException {
@@ -109,6 +113,15 @@ public class VoirAnnonceActivity extends AppCompatActivity {
         contactAnnonce.setText("Contacter "+annonce.getPseudo());
         mailAnnonce.setText(annonce.getEmailContact());
         telAnnonce.setText(annonce.getTelContact());
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId() == android.R.id.home)
+        {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
 
