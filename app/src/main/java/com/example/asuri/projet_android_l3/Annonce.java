@@ -1,5 +1,7 @@
 package com.example.asuri.projet_android_l3;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -109,7 +111,14 @@ public class Annonce {
     }
 
     public String getImage() {
-        int index = new Random().nextInt(this.images.size());
+        int size = this.images.size();
+        int index;
+        if(size > 0)
+            index = new Random().nextInt(size);
+        else {
+            this.addImage("https://myaco.lemans.org/GED/content/4FA6F788-4ACF-4B1A-A150-C127C75E3D14.jpg");
+            index = 0;
+        }
         return images.get(index);
     }
 
