@@ -2,6 +2,7 @@ package com.example.asuri.projet_android_l3;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,7 +15,7 @@ public class VoirAnnonceActivity extends AppCompatActivity {
 
     //association avec la vue
     String idAnnonce;
-    String pseudo;
+    TextView pseudo;
     TextView titreAnnonce;
     ImageView imgAnnonce;
     TextView prixAnnonce;
@@ -32,8 +33,17 @@ public class VoirAnnonceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voir_annonce);
 
-        this.idAnnonce = "3mdzx";
-        this.pseudo = "Carl";
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                this.idAnnonce= null;
+            } else {
+                this.idAnnonce= extras.getString("id");
+            }
+        } else {
+            Log.e("error","Error, pas d'id en param");
+        }
+
         this.titreAnnonce = findViewById(R.id.titreAnnonce);
         this.imgAnnonce = findViewById(R.id.imgAnnonce);
         this.prixAnnonce = findViewById(R.id.prixAnnonce);
@@ -44,10 +54,11 @@ public class VoirAnnonceActivity extends AppCompatActivity {
         this.mailAnnonce = findViewById(R.id.mailAnnonce);
         this.telAnnonce = findViewById(R.id.telAnnonce);
 
+        String url = "https://ensweb.users.info.unicaen.fr/android-api/mock-api/details/"+this.idAnnonce+".json";
+
         // Module picasso pour charger image par défault
         Picasso.with(getApplicationContext()).load(R.drawable.photo_default).into(imgAnnonce);
 
-        String url = "https://ensweb.users.info.unicaen.fr/android-api/mock-api/completeAdWithImages.json";
         Controller controller = new Controller(this, annonce);
         controller.getJsonURL(url);
     }

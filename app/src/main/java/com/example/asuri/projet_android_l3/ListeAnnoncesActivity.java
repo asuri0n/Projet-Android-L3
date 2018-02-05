@@ -17,11 +17,6 @@ import java.util.List;
 
 public class ListeAnnoncesActivity extends AppCompatActivity {
 
-    ImageView imgListeAnnonce;
-    TextView titreListeAnnonce;
-    TextView prixListeAnnonce;
-    TextView descriptionListeAnnonce;
-
     List<Annonce> annoncesList;
     ListView lv;
 
