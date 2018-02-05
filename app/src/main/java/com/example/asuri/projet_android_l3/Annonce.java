@@ -110,6 +110,10 @@ public class Annonce {
         this.cp = cp;
     }
 
+    public List<String> getImages() {
+        return images;
+    }
+
     public String getImage() {
         int size = this.images.size();
         int index;
