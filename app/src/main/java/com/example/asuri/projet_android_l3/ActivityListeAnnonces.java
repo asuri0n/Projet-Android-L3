@@ -1,7 +1,7 @@
 package com.example.asuri.projet_android_l3;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -40,7 +40,7 @@ public class ActivityListeAnnonces extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        annoncesList = AnnonceJSONParser.parseDataList(response);
+                        annoncesList = AnnonceJSONParser.parseAnnoncesList(response);
                         AnnoncesAdapter adapter = new AnnoncesAdapter(ActivityListeAnnonces.this, annoncesList);
                         lv.setAdapter(adapter);
                     }

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -66,7 +67,7 @@ class AnnoncesAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context,ActivityVoirAnnonce.class);
-                intent.putExtra("id",annonce.getId());
+                intent.putExtra("annonce", annonce);
                 context.startActivity(intent);
             }
         });
@@ -75,12 +76,9 @@ class AnnoncesAdapter extends BaseAdapter {
     }
 
     public class ViewHolder {
-
         TextView _title;
         TextView _prix;
         TextView _desc;
         ImageView _image;
-
     }
-
 }

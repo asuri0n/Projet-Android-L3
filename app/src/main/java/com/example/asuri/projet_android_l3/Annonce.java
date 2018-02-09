@@ -1,10 +1,9 @@
 package com.example.asuri.projet_android_l3;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,7 +14,7 @@ import java.util.Random;
  * Created by thomas on 26/01/2018.
  */
 
-public class Annonce {
+public class Annonce implements Serializable {
     //composition d'une annonce
     private String id;
     private String titre;

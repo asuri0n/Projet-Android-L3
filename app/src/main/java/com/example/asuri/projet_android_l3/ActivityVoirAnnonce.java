@@ -18,9 +18,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 public class ActivityVoirAnnonce extends AppCompatActivity {
 
     //association avec la vue
@@ -42,18 +39,6 @@ public class ActivityVoirAnnonce extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voir_annonce);
-        String url = "";
-        if (savedInstanceState == null) {
-            Bundle extras = getIntent().getExtras();
-            if(extras == null) {
-                url = "https://ensweb.users.info.unicaen.fr/android-api/?apikey=21404260&method=randomAd";
-            } else {
-                this.idAnnonce = extras.getString("id");
-                url = "https://ensweb.users.info.unicaen.fr/android-api/?apikey=21404260&method=details&id="+this.idAnnonce+"&fake=images";
-            }
-        } else {
-            Log.e("error","Error, pas d'id en param");
-        }
 
         this.titreAnnonce = findViewById(R.id.titreAnnonce);
         this.imgAnnonce = findViewById(R.id.imgAnnonce);
@@ -65,9 +50,22 @@ public class ActivityVoirAnnonce extends AppCompatActivity {
         this.mailAnnonce = findViewById(R.id.mailAnnonce);
         this.telAnnonce = findViewById(R.id.telAnnonce);
 
-        // Module picasso pour charger image par défault
-        Picasso.with(getApplicationContext()).load(R.drawable.photo_default).into(imgAnnonce);
-        requestData(url);
+        String url = "";
+        if (savedInstanceState == null) {
+            Intent intent = getIntent();
+            if(intent.getExtras() == null) {
+                url = "https://ensweb.users.info.unicaen.fr/android-api/?apikey=21404260&method=randomAd";
+                // Module picasso pour charger image par défault
+                Picasso.with(getApplicationContext()).load(R.drawable.photo_default).into(imgAnnonce);
+                requestData(url);
+            } else {
+                annonce = (Annonce)intent.getSerializableExtra("annonce");
+                fillAnnonceData(annonce);
+            }
+        } else {
+            Log.e("error","Error, pas d'id en param");
+        }
+
 
         this.mailAnnonce.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,17 +98,9 @@ public class ActivityVoirAnnonce extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        annonce = AnnonceJSONParser.parseData(response);
+                    annonce = AnnonceJSONParser.parseAnnonce(response);
+                    fillAnnonceData(annonce);
 
-                        titreAnnonce.setText(annonce.getTitre());
-                        Picasso.with(getApplicationContext()).load(annonce.getImage()).into(imgAnnonce);
-                        prixAnnonce.setText(annonce.getPrix()+"€");
-                        adresseAnnonce.setText(annonce.getCp() + " " + annonce.getVille());
-                        descriptionAnnonce.setText(annonce.getDescription());
-                        dateAnnonce.setText(annonce.getFormatedDate(annonce.getDate()));
-                        contactAnnonce.setText("Contacter "+annonce.getPseudo());
-                        mailAnnonce.setText(annonce.getEmailContact());
-                        telAnnonce.setText(annonce.getTelContact());
                     }
                 },
                 new Response.ErrorListener() {
@@ -123,6 +113,18 @@ public class ActivityVoirAnnonce extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(request);
+    }
+
+    private void fillAnnonceData(Annonce annonce) {
+        titreAnnonce.setText(annonce.getTitre());
+        Picasso.with(getApplicationContext()).load(annonce.getImage()).into(imgAnnonce);
+        prixAnnonce.setText(annonce.getPrix()+"€");
+        adresseAnnonce.setText(annonce.getCp() + " " + annonce.getVille());
+        descriptionAnnonce.setText(annonce.getDescription());
+        dateAnnonce.setText(annonce.getFormatedDate(annonce.getDate()));
+        contactAnnonce.setText("Contacter "+annonce.getPseudo());
+        mailAnnonce.setText(annonce.getEmailContact());
+        telAnnonce.setText(annonce.getTelContact());
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
