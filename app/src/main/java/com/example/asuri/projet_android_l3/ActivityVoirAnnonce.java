@@ -9,13 +9,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class VoirAnnonceActivity extends AppCompatActivity {
+public class ActivityVoirAnnonce extends AppCompatActivity {
 
     //association avec la vue
     String idAnnonce;
@@ -30,19 +36,20 @@ public class VoirAnnonceActivity extends AppCompatActivity {
     TextView mailAnnonce;
     TextView telAnnonce;
 
-    final Annonce annonce = new Annonce();
+    Annonce annonce = new Annonce();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voir_annonce);
-
+        String url = "";
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
-                this.idAnnonce= null;
+                url = "https://ensweb.users.info.unicaen.fr/android-api/?apikey=21404260&method=randomAd";
             } else {
-                this.idAnnonce= extras.getString("id");
+                this.idAnnonce = extras.getString("id");
+                url = "https://ensweb.users.info.unicaen.fr/android-api/?apikey=21404260&method=details&id="+this.idAnnonce+"&fake=images";
             }
         } else {
             Log.e("error","Error, pas d'id en param");
@@ -58,13 +65,9 @@ public class VoirAnnonceActivity extends AppCompatActivity {
         this.mailAnnonce = findViewById(R.id.mailAnnonce);
         this.telAnnonce = findViewById(R.id.telAnnonce);
 
-        String url = "https://ensweb.users.info.unicaen.fr/android-api/mock-api/details/"+this.idAnnonce+".json";
-
         // Module picasso pour charger image par défault
         Picasso.with(getApplicationContext()).load(R.drawable.photo_default).into(imgAnnonce);
-
-        Controller controller = new Controller(this, annonce);
-        controller.getJsonURL(url);
+        requestData(url);
 
         this.mailAnnonce.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,29 +93,36 @@ public class VoirAnnonceActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
     }
 
-    public void setVoirAnnonceValues(JSONObject json) throws JSONException {
-        annonce.setId(json.getJSONObject("response").getString("id"));
-        annonce.setTitre(json.getJSONObject("response").getString("titre"));
-        annonce.setImages(json.getJSONObject("response").getJSONArray("images"));
-        annonce.setPrix(json.getJSONObject("response").getInt("prix"));
-        annonce.setCp(json.getJSONObject("response").getString("cp"));
-        annonce.setVille(json.getJSONObject("response").getString("ville"));
-        annonce.setDescription(json.getJSONObject("response").getString("description"));
-        annonce.setDate(json.getJSONObject("response").getString("date"));
-        annonce.setPseudo(json.getJSONObject("response").getString("pseudo"));
-        annonce.setEmailContact(json.getJSONObject("response").getString("emailContact"));
-        annonce.setTelContact(json.getJSONObject("response").getString("telContact"));
+    public void requestData(String uri) {
 
+        StringRequest request = new StringRequest(uri,
 
-        titreAnnonce.setText(annonce.getTitre());
-        Picasso.with(getApplicationContext()).load(annonce.getImage()).into(imgAnnonce);
-        prixAnnonce.setText(annonce.getPrix()+"€");
-        adresseAnnonce.setText(annonce.getCp() + " " + annonce.getVille());
-        descriptionAnnonce.setText(annonce.getDescription());
-        dateAnnonce.setText(annonce.getFormatedDate(annonce.getDate()));
-        contactAnnonce.setText("Contacter "+annonce.getPseudo());
-        mailAnnonce.setText(annonce.getEmailContact());
-        telAnnonce.setText(annonce.getTelContact());
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        annonce = AnnonceJSONParser.parseData(response);
+
+                        titreAnnonce.setText(annonce.getTitre());
+                        Picasso.with(getApplicationContext()).load(annonce.getImage()).into(imgAnnonce);
+                        prixAnnonce.setText(annonce.getPrix()+"€");
+                        adresseAnnonce.setText(annonce.getCp() + " " + annonce.getVille());
+                        descriptionAnnonce.setText(annonce.getDescription());
+                        dateAnnonce.setText(annonce.getFormatedDate(annonce.getDate()));
+                        contactAnnonce.setText("Contacter "+annonce.getPseudo());
+                        mailAnnonce.setText(annonce.getEmailContact());
+                        telAnnonce.setText(annonce.getTelContact());
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        Toast.makeText(ActivityVoirAnnonce.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(request);
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {

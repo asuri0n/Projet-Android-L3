@@ -6,7 +6,7 @@ import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-public class MonProfilActivity extends AppCompatActivity {
+public class ActivityMonProfil extends AppCompatActivity {
 
 
     @Override

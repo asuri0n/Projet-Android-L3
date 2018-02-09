@@ -26,19 +26,25 @@ public class MainActivity extends AppCompatActivity {
         this.btnVoirAnnonce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newIntent(VoirAnnonceActivity.class);
+                newIntent(ActivityVoirAnnonce.class);
             }
         });
         this.btnMonProfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newIntent(MonProfilActivity.class);
+                newIntent(ActivityMonProfil.class);
             }
         });
         this.btnListerAnnonce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newIntent(ListeAnnoncesActivity.class);
+                newIntent(ActivityListeAnnonces.class);
+            }
+        });
+        this.btnDeposerAnnonce.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newIntent(ActivityListeAnnonces.class);
             }
         });
     }

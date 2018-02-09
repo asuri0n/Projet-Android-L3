@@ -3,9 +3,7 @@ package com.example.asuri.projet_android_l3;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -16,7 +14,7 @@ import com.android.volley.toolbox.Volley;
 
 import java.util.List;
 
-public class ListeAnnoncesActivity extends AppCompatActivity {
+public class ActivityListeAnnonces extends AppCompatActivity {
 
     List<Annonce> annoncesList;
     ListView lv;
@@ -28,7 +26,7 @@ public class ListeAnnoncesActivity extends AppCompatActivity {
 
         this.lv = findViewById(R.id.listView);
 
-        String url = "https://ensweb.users.info.unicaen.fr/android-api/mock-api/liste.json";
+        String url = "https://ensweb.users.info.unicaen.fr/android-api/?apikey=21404260&method=listAll&fake=image";
         requestData(url);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -42,8 +40,8 @@ public class ListeAnnoncesActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        annoncesList = AnnoncesJSONParser.parseData(response);
-                        AnnoncesAdapter adapter = new AnnoncesAdapter(ListeAnnoncesActivity.this, annoncesList);
+                        annoncesList = AnnonceJSONParser.parseDataList(response);
+                        AnnoncesAdapter adapter = new AnnoncesAdapter(ActivityListeAnnonces.this, annoncesList);
                         lv.setAdapter(adapter);
                     }
                 },
@@ -51,7 +49,7 @@ public class ListeAnnoncesActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
 
-                        Toast.makeText(ListeAnnoncesActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ActivityListeAnnonces.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
 

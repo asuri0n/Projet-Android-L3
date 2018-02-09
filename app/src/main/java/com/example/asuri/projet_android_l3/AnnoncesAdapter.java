@@ -65,7 +65,7 @@ class AnnoncesAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context,VoirAnnonceActivity.class);
+                Intent intent = new Intent(context,ActivityVoirAnnonce.class);
                 intent.putExtra("id",annonce.getId());
                 context.startActivity(intent);
             }

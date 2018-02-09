@@ -18,9 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".VoirAnnonceActivity" />
-        <activity android:name=".MonProfilActivity" />
-        <activity android:name=".ListeAnnoncesActivity"></activity>
+        <activity android:name=".ActivityVoirAnnonce" />
+        <activity android:name=".ActivityMonProfil" />
+        <activity android:name=".ActivityListeAnnonces" />
+        <activity android:name=".ActivityDeposerAnnonce"></activity>
     </application>
 
 </manifest>
