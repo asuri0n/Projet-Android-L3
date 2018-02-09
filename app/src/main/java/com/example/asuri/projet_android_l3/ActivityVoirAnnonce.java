@@ -18,6 +18,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
+import java.util.Objects;
+
 public class ActivityVoirAnnonce extends AppCompatActivity {
 
     //association avec la vue
@@ -61,34 +63,37 @@ public class ActivityVoirAnnonce extends AppCompatActivity {
             } else {
                 annonce = (Annonce)intent.getSerializableExtra("annonce");
                 fillAnnonceData(annonce);
+                if(intent.getStringExtra("message") != null){
+                    Toast.makeText(ActivityVoirAnnonce.this, intent.getStringExtra("message"), Toast.LENGTH_SHORT).show();
+                }
             }
         } else {
             Log.e("error","Error, pas d'id en param");
         }
 
+        if(!Objects.equals(annonce.getEmailContact(), "") || annonce.getEmailContact() != null ) {
+            this.mailAnnonce.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    Uri data = Uri.parse("mailto:" + annonce.getEmailContact());
+                    intent.setData(data);
+                    startActivity(intent);
+                }
+            });
+        }
 
-        this.mailAnnonce.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                Uri data = Uri.parse("mailto:"+annonce.getEmailContact());
-                intent.setData(data);
-                startActivity(intent);
-            }
-        });
-
-        this.telAnnonce.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                Uri data = Uri.parse("tel:"+annonce.getTelContact());
-                intent.setData(data);
-                startActivity(intent);
-            }
-        });
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        if(!Objects.equals(annonce.getTelContact(), "") || annonce.getTelContact() != null ) {
+            this.telAnnonce.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    Uri data = Uri.parse("tel:"+annonce.getTelContact());
+                    intent.setData(data);
+                    startActivity(intent);
+                }
+            });
+        }
     }
 
     public void requestData(String uri) {
@@ -98,15 +103,13 @@ public class ActivityVoirAnnonce extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                    annonce = AnnonceJSONParser.parseAnnonce(response);
-                    fillAnnonceData(annonce);
-
+                        annonce = AnnonceJSONParser.parseAnnonce(response);
+                        fillAnnonceData(annonce);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
                         Toast.makeText(ActivityVoirAnnonce.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });

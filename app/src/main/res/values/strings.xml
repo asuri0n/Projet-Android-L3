@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Projet-Android-L3</string>
+    <string name="app_name">Annonces</string>
     <string name="mon_profil">Mon profil</string>
     <string name="lister_annonces">Lister annonces</string>
     <string name="d_poser_annonce">Déposer annonce</string>

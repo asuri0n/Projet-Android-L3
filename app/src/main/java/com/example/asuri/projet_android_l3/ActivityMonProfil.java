@@ -13,9 +13,6 @@ public class ActivityMonProfil extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         getFragmentManager().beginTransaction().replace(android.R.id.content, new MyPreferenceFragment()).commit();
-
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     public static class MyPreferenceFragment extends PreferenceFragment

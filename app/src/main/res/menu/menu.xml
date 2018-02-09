@@ -1,0 +1,27 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/voir_annonce"
+        android:icon="@drawable/ic_menu_camera"
+        android:title="Voir Annonce"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/deposer_annonce"
+        android:icon="@drawable/ic_menu_send"
+        android:title="Voir une annonce"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/list_annonce"
+        android:icon="@drawable/ic_menu_gallery"
+        android:title="Liste des annonces"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/mon_profil"
+        android:icon="@drawable/ic_menu_manage"
+        android:title="Mon Profil"
+        app:showAsAction="always" />
+
+</menu>
