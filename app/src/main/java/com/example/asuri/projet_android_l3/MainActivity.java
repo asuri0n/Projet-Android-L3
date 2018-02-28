@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         this.btnDeposerAnnonce = findViewById(R.id.BtnDepoAnnonce);
         this.btnListerAnnonce = findViewById(R.id.BtnListAnnonce);
         this.btnMonProfil = findViewById(R.id.BtnMonProfil);
-
     }
 
     @Override
