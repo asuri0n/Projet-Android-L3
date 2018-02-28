@@ -32,20 +32,6 @@ public class Annonce implements Serializable {
     public Annonce() {
     }
 
-    public Annonce(String id, String titre, String description, int prix, String pseudo, String emailContact, String telContact, String ville, String cp, ArrayList<String> images, String date) {
-        this.id = id;
-        this.titre = titre;
-        this.description = description;
-        this.prix = prix;
-        this.pseudo = pseudo;
-        this.emailContact = emailContact;
-        this.telContact = telContact;
-        this.ville = ville;
-        this.cp = cp;
-        this.images = images;
-        this.date = date;
-    }
-
     public String getId() {
         return id;
     }
@@ -178,19 +164,5 @@ public class Annonce implements Serializable {
                 ", date='" + date + '\'' +
                 ", emailContact='" + emailContact + '\'' +
                 '}';
-    }
-
-    public void fillAnnonce(JSONObject jsonResponse) throws JSONException {
-        this.setId(jsonResponse.getString("id"));
-        this.setTitre(jsonResponse.getString("titre"));
-        this.setDescription(jsonResponse.getString("description"));
-        this.setPrix(jsonResponse.getInt("prix"));
-        this.setPseudo(jsonResponse.getString("pseudo"));
-        this.setEmailContact(jsonResponse.getString("emailContact"));
-        this.setTelContact(jsonResponse.getString("telContact"));
-        this.setVille(jsonResponse.getString("ville"));
-        this.setCp(jsonResponse.getString("cp"));
-        this.setImages(jsonResponse.getJSONArray("images"));
-        this.setDate(jsonResponse.getString("date"));
     }
 }
