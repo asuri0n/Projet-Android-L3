@@ -1,5 +1,6 @@
 package com.example.asuri.projet_android_l3;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -65,12 +66,20 @@ public class ActivityDeposerAnnonce extends AppCompatActivity {
     }
 
     @Override
+    public boolean onNavigateUp(){
+        finish(); return true;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deposer_annonce);
+        setTitle("Déposer");
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         this.prefPseudo = prefs.getString("pseudo", "");

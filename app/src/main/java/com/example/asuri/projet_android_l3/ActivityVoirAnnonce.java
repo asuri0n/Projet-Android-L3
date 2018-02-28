@@ -50,12 +50,20 @@ public class ActivityVoirAnnonce extends AppCompatActivity {
     }
 
     @Override
+    public boolean onNavigateUp(){
+        finish(); return true;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voir_annonce);
+        setTitle("Chargement ...");
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         this.titreAnnonce = findViewById(R.id.titreAnnonce);
         this.imgAnnonce = findViewById(R.id.imgAnnonce);
@@ -117,6 +125,7 @@ public class ActivityVoirAnnonce extends AppCompatActivity {
                     public void onResponse(String response) {
                         annonce = AnnonceJSONParser.parseAnnonce(response);
                         fillAnnonceData(annonce);
+                        setTitle("Annonce N°"+annonce.getId());
                     }
                 },
                 new Response.ErrorListener() {

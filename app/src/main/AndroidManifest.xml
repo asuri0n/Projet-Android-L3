@@ -5,23 +5,52 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".ActivityListeAnnonces">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        android:launchMode="singleTop">
+
+        <activity android:name=".Main2Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ActivityVoirAnnonce" />
-        <activity android:name=".ActivityMonProfil" />
-        <activity android:name=".ActivityDeposerAnnonce"/>
+
+        <activity
+            android:name=".ActivityDeposerAnnonce"
+            android:parentActivityName="com.example.asuri.projet_android_l3.Main2Activity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.asuri.projet_android_l3.Main2Activity" />
+        </activity>
+
+        <activity android:name=".ActivityVoirAnnonce"
+            android:parentActivityName="com.example.asuri.projet_android_l3.Main2Activity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.asuri.projet_android_l3.Main2Activity" />
+        </activity>
+
+        <activity android:name=".ActivityMonProfil"
+            android:parentActivityName="com.example.asuri.projet_android_l3.Main2Activity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.asuri.projet_android_l3.Main2Activity" />
+        </activity>
+
+        <activity android:name=".ActivityListeAnnonces"
+            android:parentActivityName="com.example.asuri.projet_android_l3.Main2Activity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.asuri.projet_android_l3.Main2Activity" />
+        </activity>
     </application>
 
 </manifest>

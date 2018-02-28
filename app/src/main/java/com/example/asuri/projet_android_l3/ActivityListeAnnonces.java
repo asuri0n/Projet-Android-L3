@@ -1,14 +1,17 @@
 package com.example.asuri.projet_android_l3;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -34,12 +37,20 @@ public class ActivityListeAnnonces extends AppCompatActivity {
     }
 
     @Override
+    public boolean onNavigateUp(){
+        finish(); return true;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_liste_annonces);
+        setTitle("Liste");
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         this.lv = findViewById(R.id.listView);
 
@@ -111,5 +122,4 @@ public class ActivityListeAnnonces extends AppCompatActivity {
         Intent intent=new Intent(this,activity);
         startActivity(intent);
     }
-
 }
