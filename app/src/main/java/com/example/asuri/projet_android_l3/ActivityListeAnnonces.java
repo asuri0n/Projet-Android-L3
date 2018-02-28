@@ -1,17 +1,13 @@
 package com.example.asuri.projet_android_l3;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -37,8 +33,9 @@ public class ActivityListeAnnonces extends AppCompatActivity {
     }
 
     @Override
-    public boolean onNavigateUp(){
-        finish(); return true;
+    public boolean onNavigateUp() {
+        finish();
+        return true;
     }
 
     @Override
@@ -95,7 +92,7 @@ public class ActivityListeAnnonces extends AppCompatActivity {
                 String prefMail = prefs.getString("email", "");
                 String prefTel = prefs.getString("phone", "");
 
-                if(Objects.equals(prefPseudo, "") || Objects.equals(prefMail, "") || Objects.equals(prefTel, "")){
+                if (Objects.equals(prefPseudo, "") || Objects.equals(prefMail, "") || Objects.equals(prefTel, "")) {
                     Toast.makeText(getApplicationContext(), "Avant de déposer une annonce, vous devez renseignez vos informations dans 'MON PROFIL'", Toast.LENGTH_LONG).show();
                 } else {
                     newIntent(ActivityDeposerAnnonce.class);
@@ -118,8 +115,8 @@ public class ActivityListeAnnonces extends AppCompatActivity {
         }
     }
 
-    public void newIntent(Class activity){
-        Intent intent=new Intent(this,activity);
+    public void newIntent(Class activity) {
+        Intent intent = new Intent(this, activity);
         startActivity(intent);
     }
 }

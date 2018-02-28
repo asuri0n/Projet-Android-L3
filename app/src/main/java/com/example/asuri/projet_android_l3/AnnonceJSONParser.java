@@ -1,7 +1,5 @@
 package com.example.asuri.projet_android_l3;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,8 +33,7 @@ class AnnonceJSONParser {
             }
             return annoncesList;
 
-        }
-        catch (JSONException ex) {
+        } catch (JSONException ex) {
             ex.printStackTrace();
             return null;
         }
@@ -50,8 +47,7 @@ class AnnonceJSONParser {
             setAttributs(annonce, annonces_arry);
 
             return annonce;
-        }
-        catch (JSONException ex) {
+        } catch (JSONException ex) {
             ex.printStackTrace();
             return null;
         }

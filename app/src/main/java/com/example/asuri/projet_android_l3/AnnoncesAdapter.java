@@ -50,7 +50,7 @@ class AnnoncesAdapter extends BaseAdapter {
         final Annonce annonce = annoncesList.get(position);
         final ViewHolder holder;
 
-        convertView = inflater.inflate(R.layout.list_item_annonces_template,null);
+        convertView = inflater.inflate(R.layout.list_item_annonces_template, null);
         holder = new ViewHolder();
 
         holder._title = convertView.findViewById(R.id.titreListeAnnonce);
@@ -66,7 +66,7 @@ class AnnoncesAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context,ActivityVoirAnnonce.class);
+                Intent intent = new Intent(context, ActivityVoirAnnonce.class);
                 intent.putExtra("annonce", annonce);
                 context.startActivity(intent);
             }

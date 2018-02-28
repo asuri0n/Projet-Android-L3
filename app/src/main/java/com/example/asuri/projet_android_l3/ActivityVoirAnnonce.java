@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +22,6 @@ import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
-import java.util.Set;
 
 public class ActivityVoirAnnonce extends AppCompatActivity {
 
@@ -50,8 +48,9 @@ public class ActivityVoirAnnonce extends AppCompatActivity {
     }
 
     @Override
-    public boolean onNavigateUp(){
-        finish(); return true;
+    public boolean onNavigateUp() {
+        finish();
+        return true;
     }
 
     @Override
@@ -78,20 +77,20 @@ public class ActivityVoirAnnonce extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         annonce = new Annonce();
 
-        if(extras == null) {
+        if (extras == null) {
             String url = "https://ensweb.users.info.unicaen.fr/android-api/?apikey=21404260&method=randomAd";
             // Module picasso pour charger image par défault
             Picasso.with(getApplicationContext()).load(R.drawable.photo_default).into(imgAnnonce);
             requestData(url);
         } else {
-            annonce = (Annonce)getIntent().getSerializableExtra("annonce"); //Obtaining data
+            annonce = (Annonce) getIntent().getSerializableExtra("annonce"); //Obtaining data
             fillAnnonceData(annonce);
         }
-        if(getIntent().getStringExtra("message") != null){
+        if (getIntent().getStringExtra("message") != null) {
             Toast.makeText(ActivityVoirAnnonce.this, getIntent().getStringExtra("message"), Toast.LENGTH_SHORT).show();
         }
 
-        if(!Objects.equals(annonce.getEmailContact(), "") || annonce.getEmailContact() != null ) {
+        if (!Objects.equals(annonce.getEmailContact(), "") || annonce.getEmailContact() != null) {
             this.mailAnnonce.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -103,12 +102,12 @@ public class ActivityVoirAnnonce extends AppCompatActivity {
             });
         }
 
-        if(!Objects.equals(annonce.getTelContact(), "") || annonce.getTelContact() != null ) {
+        if (!Objects.equals(annonce.getTelContact(), "") || annonce.getTelContact() != null) {
             this.telAnnonce.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
-                    Uri data = Uri.parse("tel:"+annonce.getTelContact());
+                    Uri data = Uri.parse("tel:" + annonce.getTelContact());
                     intent.setData(data);
                     startActivity(intent);
                 }
@@ -125,7 +124,7 @@ public class ActivityVoirAnnonce extends AppCompatActivity {
                     public void onResponse(String response) {
                         annonce = AnnonceJSONParser.parseAnnonce(response);
                         fillAnnonceData(annonce);
-                        setTitle("Annonce N°"+annonce.getId());
+                        setTitle("Annonce N°" + annonce.getId());
                     }
                 },
                 new Response.ErrorListener() {
@@ -142,11 +141,11 @@ public class ActivityVoirAnnonce extends AppCompatActivity {
     private void fillAnnonceData(Annonce annonce) {
         titreAnnonce.setText(annonce.getTitre());
         Picasso.with(getApplicationContext()).load(annonce.getImage()).into(imgAnnonce);
-        prixAnnonce.setText(annonce.getPrix()+"€");
+        prixAnnonce.setText(annonce.getPrix() + "€");
         adresseAnnonce.setText(annonce.getCp() + " " + annonce.getVille());
         descriptionAnnonce.setText(annonce.getDescription());
         dateAnnonce.setText(annonce.getFormatedDate(annonce.getDate()));
-        contactAnnonce.setText("Contacter "+annonce.getPseudo());
+        contactAnnonce.setText("Contacter " + annonce.getPseudo());
         mailAnnonce.setText(annonce.getEmailContact());
         telAnnonce.setText(annonce.getTelContact());
     }
@@ -164,7 +163,7 @@ public class ActivityVoirAnnonce extends AppCompatActivity {
                 String prefMail = prefs.getString("email", "");
                 String prefTel = prefs.getString("phone", "");
 
-                if(Objects.equals(prefPseudo, "") || Objects.equals(prefMail, "") || Objects.equals(prefTel, "")){
+                if (Objects.equals(prefPseudo, "") || Objects.equals(prefMail, "") || Objects.equals(prefTel, "")) {
                     Toast.makeText(getApplicationContext(), "Avant de déposer une annonce, vous devez renseignez vos informations dans 'MON PROFIL'", Toast.LENGTH_LONG).show();
                 } else {
                     newIntent(ActivityDeposerAnnonce.class);
@@ -187,8 +186,8 @@ public class ActivityVoirAnnonce extends AppCompatActivity {
         }
     }
 
-    public void newIntent(Class activity){
-        Intent intent=new Intent(this,activity);
+    public void newIntent(Class activity) {
+        Intent intent = new Intent(this, activity);
         startActivity(intent);
     }
 }

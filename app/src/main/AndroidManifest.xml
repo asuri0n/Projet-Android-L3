@@ -48,7 +48,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.asuri.projet_android_l3.Main2Activity" />
         </activity>
-        <activity android:name=".ActivityAPropos"></activity>
+        <activity
+            android:name=".ActivityAPropos"
+            android:parentActivityName=".Main2Activity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.asuri.projet_android_l3.Main2Activity" />
+        </activity>
     </application>
 
 </manifest>

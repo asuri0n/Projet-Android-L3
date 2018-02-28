@@ -2,7 +2,6 @@ package com.example.asuri.projet_android_l3;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
