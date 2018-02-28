@@ -119,6 +119,7 @@ public class ActivityVoirAnnonce extends AppCompatActivity {
     }
 
     private void fillAnnonceData(Annonce annonce) {
+        Log.e("erreur",annonce.toString());
         titreAnnonce.setText(annonce.getTitre());
         Picasso.with(getApplicationContext()).load(annonce.getImage()).into(imgAnnonce);
         prixAnnonce.setText(annonce.getPrix()+"€");

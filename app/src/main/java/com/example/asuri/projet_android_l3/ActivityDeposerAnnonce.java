@@ -105,8 +105,7 @@ public class ActivityDeposerAnnonce extends AppCompatActivity {
                                 intent.putExtra("annonce", annonce);
                                 getApplicationContext().startActivity(intent);
                             } else {
-                                Toast.makeText(getApplicationContext(), jsonObject.getString("response"), Toast.LENGTH_LONG).show();
-                                annonce = AnnonceJSONParser.parseAnnonce(response);
+                                Toast.makeText(getApplicationContext(), "ERREUR: "+jsonObject.getString("response"), Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -123,7 +122,7 @@ public class ActivityDeposerAnnonce extends AppCompatActivity {
                     protected Map<String,String> getParams(){
                         Map<String,String> params = new HashMap<String, String>();
                         params.put("apikey","21404260");
-                        params.put("method","POST");
+                        params.put("method","save");
 
                         params.put("titre", titreAnnonce.getText().toString());
                         params.put("description", descriptionAnnonce.getText().toString());

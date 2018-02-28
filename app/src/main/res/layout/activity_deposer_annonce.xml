@@ -33,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Titre"
+            android:text="azd"
             android:textSize="25sp" />
 
         <EditText
@@ -40,14 +41,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Description"
+            android:text="azd"
             android:textSize="25sp" />
 
         <EditText
             android:id="@+id/prix"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
             android:hint="Prix"
+            android:inputType="number"
+            android:text="159841"
             android:textSize="25sp" />
 
         <EditText
@@ -55,14 +58,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Ville"
+            android:text="azdazd"
             android:textSize="25sp" />
 
         <EditText
             android:id="@+id/cp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
             android:hint="Code Postal"
+            android:inputType="number"
+            android:text="61100"
             android:textSize="25sp" />
         <Button
             android:id="@+id/buttonDeposer"
