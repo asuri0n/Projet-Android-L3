@@ -16,7 +16,7 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
     <ScrollView
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="54dp"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
