@@ -37,7 +37,6 @@ class AnnonceJSONParser {
 
         }
         catch (JSONException ex) {
-            Log.e("test", ex.toString());
             ex.printStackTrace();
             return null;
         }
@@ -53,7 +52,6 @@ class AnnonceJSONParser {
             return annonce;
         }
         catch (JSONException ex) {
-            Log.e("test", ex.toString());
             ex.printStackTrace();
             return null;
         }

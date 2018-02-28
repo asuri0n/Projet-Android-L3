@@ -53,26 +53,19 @@ public class ActivityVoirAnnonce extends AppCompatActivity {
         this.mailAnnonce = findViewById(R.id.mailAnnonce);
         this.telAnnonce = findViewById(R.id.telAnnonce);
 
-        String url = "";
-
-        //if (savedInstanceState == null) {
-            Bundle extras = getIntent().getExtras();
-            if(extras == null) {
-                url = "https://ensweb.users.info.unicaen.fr/android-api/?apikey=21404260&method=randomAd";
-                // Module picasso pour charger image par défault
-                Picasso.with(getApplicationContext()).load(R.drawable.photo_default).into(imgAnnonce);
-                requestData(url);
-            } else {
-                annonce = (Annonce)getIntent().getSerializableExtra("annonce"); //Obtaining data
-                Log.e("erreur",annonce.toString());
-                fillAnnonceData(annonce);
-            }
-            if(getIntent().getStringExtra("message") != null){
-                Toast.makeText(ActivityVoirAnnonce.this, getIntent().getStringExtra("message"), Toast.LENGTH_SHORT).show();
-            }
-        /*} else {
-            Log.e("error","Error, pas d'id en param");
-        }*/
+        Bundle extras = getIntent().getExtras();
+        if(extras == null) {
+            String url = "https://ensweb.users.info.unicaen.fr/android-api/?apikey=21404260&method=randomAd";
+            // Module picasso pour charger image par défault
+            Picasso.with(getApplicationContext()).load(R.drawable.photo_default).into(imgAnnonce);
+            requestData(url);
+        } else {
+            annonce = (Annonce)getIntent().getSerializableExtra("annonce"); //Obtaining data
+            fillAnnonceData(annonce);
+        }
+        if(getIntent().getStringExtra("message") != null){
+            Toast.makeText(ActivityVoirAnnonce.this, getIntent().getStringExtra("message"), Toast.LENGTH_SHORT).show();
+        }
 
         if(!Objects.equals(annonce.getEmailContact(), "") || annonce.getEmailContact() != null ) {
             this.mailAnnonce.setOnClickListener(new View.OnClickListener() {
