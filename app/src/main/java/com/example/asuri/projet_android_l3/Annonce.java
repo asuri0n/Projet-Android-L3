@@ -2,6 +2,7 @@ package com.example.asuri.projet_android_l3;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -177,5 +178,19 @@ public class Annonce implements Serializable {
                 ", date='" + date + '\'' +
                 ", emailContact='" + emailContact + '\'' +
                 '}';
+    }
+
+    public void fillAnnonce(JSONObject jsonResponse) throws JSONException {
+        this.setId(jsonResponse.getString("id"));
+        this.setTitre(jsonResponse.getString("titre"));
+        this.setDescription(jsonResponse.getString("description"));
+        this.setPrix(jsonResponse.getInt("prix"));
+        this.setPseudo(jsonResponse.getString("pseudo"));
+        this.setEmailContact(jsonResponse.getString("emailContact"));
+        this.setTelContact(jsonResponse.getString("telContact"));
+        this.setVille(jsonResponse.getString("ville"));
+        this.setCp(jsonResponse.getString("cp"));
+        this.setImages(jsonResponse.getJSONArray("images"));
+        this.setDate(jsonResponse.getString("date"));
     }
 }

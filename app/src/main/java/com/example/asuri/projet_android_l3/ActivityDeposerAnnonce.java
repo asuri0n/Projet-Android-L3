@@ -101,9 +101,10 @@ public class ActivityDeposerAnnonce extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             if(jsonObject.getBoolean("success")){
+                                annonce = AnnonceJSONParser.parseAnnonce(response);
                                 Intent intent = new Intent(getApplicationContext(),ActivityVoirAnnonce.class);
                                 intent.putExtra("annonce", annonce);
-                                getApplicationContext().startActivity(intent);
+                                startActivity(intent);
                             } else {
                                 Toast.makeText(getApplicationContext(), "ERREUR: "+jsonObject.getString("response"), Toast.LENGTH_LONG).show();
                             }
