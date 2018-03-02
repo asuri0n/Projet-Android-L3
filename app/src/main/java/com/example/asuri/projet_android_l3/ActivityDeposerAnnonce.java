@@ -127,6 +127,7 @@ public class ActivityDeposerAnnonce extends AppCompatActivity {
         this.deposerAnnonce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setTitle("Chargement ...");
                 // Si il y a une image a upload, alors il faut faire en sorte d'attendre l'upload de l'image avant de lancer le requestData
                 if (selectedimg != null) {
                     uploadImage(getRealPathFromURI(selectedimg));
