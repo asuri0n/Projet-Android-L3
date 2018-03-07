@@ -54,7 +54,7 @@ class AnnoncesAdapter extends BaseAdapter {
         TextView desc = convertView.findViewById(R.id.descriptionListeAnnonce);
 
         title.setText(annonce.getTitre());
-        prix.setText(String.valueOf(annonce.getPrix()));
+        prix.setText(String.valueOf(annonce.getPrix())+"€");
         desc.setText(annonce.getDescription());
 
         ImageView image = convertView.findViewById(R.id.imgListeAnnonce);

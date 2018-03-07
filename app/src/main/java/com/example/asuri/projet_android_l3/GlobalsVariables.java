@@ -7,7 +7,7 @@ package com.example.asuri.projet_android_l3;
 public class GlobalsVariables {
     private static GlobalsVariables instance;
 
-    private String APIKEY = "21404260";
+    private String APIKEY = "21402838";
     private String APIURL = "https://ensweb.users.info.unicaen.fr/android-api/";
 
     private GlobalsVariables() {
