@@ -26,6 +26,10 @@ import org.json.JSONObject;
 
 import java.util.Objects;
 
+/**
+ *  Affiche une annonce précise ou random
+ */
+
 public class ActivityVoirAnnonce extends AppCompatActivity {
 
     // Classe singleton pour mettre les variables globales comme la clé API et l'url API

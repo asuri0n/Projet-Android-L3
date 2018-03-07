@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 /**
- * Created by asuri on 04/02/2018.
+ * Adapter pour la liste des annonces
  */
 
 class AnnoncesAdapter extends BaseAdapter {
@@ -23,7 +23,6 @@ class AnnoncesAdapter extends BaseAdapter {
     private LayoutInflater inflater = null;
 
     public AnnoncesAdapter(Context context, List<Annonce> list) {
-
         this.context = context;
         this.annoncesList = list;
         inflater = LayoutInflater.from(context);
@@ -36,7 +35,6 @@ class AnnoncesAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-
         return annoncesList.get(position);
     }
 
@@ -48,37 +46,31 @@ class AnnoncesAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
         final Annonce annonce = annoncesList.get(position);
-        final ViewHolder holder;
 
         convertView = inflater.inflate(R.layout.list_item_annonces_template, null);
-        holder = new ViewHolder();
 
-        holder._title = convertView.findViewById(R.id.titreListeAnnonce);
-        holder._prix = convertView.findViewById(R.id.prixListeAnnonce);
-        holder._desc = convertView.findViewById(R.id.descriptionListeAnnonce);
-        holder._title.setText(annonce.getTitre());
-        holder._prix.setText(String.valueOf(annonce.getPrix()));
-        holder._desc.setText(annonce.getDescription());
+        TextView title = convertView.findViewById(R.id.titreListeAnnonce);
+        TextView prix = convertView.findViewById(R.id.prixListeAnnonce);
+        TextView desc = convertView.findViewById(R.id.descriptionListeAnnonce);
 
-        holder._image = convertView.findViewById(R.id.imgListeAnnonce);
-        Picasso.with(context).load(annonce.getImage()).into(holder._image);
+        title.setText(annonce.getTitre());
+        prix.setText(String.valueOf(annonce.getPrix()));
+        desc.setText(annonce.getDescription());
 
+        ImageView image = convertView.findViewById(R.id.imgListeAnnonce);
+        Picasso.with(context).load(annonce.getImage()).into(image);
+
+        // Sur chaque item de la liste, ajoute un listener qui redirige vers VoirAnnonce
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ActivityVoirAnnonce.class);
+                // transmet l'objet annonce a l'activité VoirAnnonce
                 intent.putExtra("annonce", annonce);
                 context.startActivity(intent);
             }
         });
 
         return convertView;
-    }
-
-    public class ViewHolder {
-        TextView _title;
-        TextView _prix;
-        TextView _desc;
-        ImageView _image;
     }
 }

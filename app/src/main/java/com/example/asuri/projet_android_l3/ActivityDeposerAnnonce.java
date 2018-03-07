@@ -43,6 +43,11 @@ import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 
+/**
+ * Classe permetant d'ajouter une annonce sur l'api rest
+ * Possibilité d'ajouter une image de sa librairie
+ */
+
 public class ActivityDeposerAnnonce extends AppCompatActivity {
 
     // Classe singleton pour mettre les variables globales comme la clé API et l'url API

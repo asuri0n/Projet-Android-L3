@@ -24,6 +24,11 @@ import com.android.volley.toolbox.Volley;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ *  Activité d'accueil
+ *  Affiche la liste de toutes les annonces
+ */
+
 public class ActivityListeAnnonces extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
