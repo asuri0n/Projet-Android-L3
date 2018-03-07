@@ -12,20 +12,11 @@ import android.widget.Toast;
 
 import java.util.Objects;
 
+/**
+ * Classe qui gère l'activité APropos
+ */
+
 public class ActivityAPropos extends AppCompatActivity {
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        //ajoute les entrées de menu_test à l'ActionBar
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onNavigateUp() {
-        finish();
-        return true;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +24,19 @@ public class ActivityAPropos extends AppCompatActivity {
         setContentView(R.layout.activity_apropos);
         setTitle("A Propos");
 
+        // Affichage de la toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
+        // Affichage du bouton retour
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-
+    /**
+     * Gestion du clique sur le menu.
+     *
+     * @param item MenuItem
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -76,6 +73,31 @@ public class ActivityAPropos extends AppCompatActivity {
         }
     }
 
+    /**
+     * Ajoute le layout menu à l'ActionBar
+     *
+     * @param menu Menu
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    /**
+     * Si le bouton Retour (<-) est cliqué, on termine l'activité
+     */
+    @Override
+    public boolean onNavigateUp() {
+        finish();
+        return true;
+    }
+
+    /**
+     * Lancement d'une nouvelle activité
+     *
+     * @param activity Activité a lancer
+     */
     public void newIntent(Class activity) {
         Intent intent = new Intent(this, activity);
         startActivity(intent);

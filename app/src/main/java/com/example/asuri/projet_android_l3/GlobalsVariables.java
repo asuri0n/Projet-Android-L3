@@ -2,7 +2,6 @@ package com.example.asuri.projet_android_l3;
 
 /**
  * Classe singleton qui est appelé pour récupérer les variables globales.
- * Created by Nathan on 07/03/2018.
  */
 
 public class GlobalsVariables {
