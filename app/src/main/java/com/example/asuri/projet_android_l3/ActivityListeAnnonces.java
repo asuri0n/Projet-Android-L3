@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -28,21 +27,11 @@ import java.util.Objects;
 public class ActivityListeAnnonces extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    // Classe singleton pour mettre les variables globales comme la clé API et l'url API
+    GlobalsVariables global = GlobalsVariables.getInstance();
+
     List<Annonce> annoncesList;
     ListView lv;
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        //ajoute les entrées de menu_test à l'ActionBar
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onNavigateUp() {
-        finish();
-        return true;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,40 +39,47 @@ public class ActivityListeAnnonces extends AppCompatActivity
         setContentView(R.layout.activity_liste_annonces);
         setTitle("Liste");
 
+        // Affichage de la toolbar avec drawer layout
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Affichage du drawer layout
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        // Affichage du layout du NavigationView
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         this.lv = findViewById(R.id.listView);
-
-        String url = "https://ensweb.users.info.unicaen.fr/android-api/?apikey=21404260&method=listAll&fake=image";
-        requestData(url);
+        String apiUrlGetAll = global.getAPIURL() + "?apikey=" + global.getAPIKEY() + "&method=listAll&fake=image";
+        requestAllAnnonces(apiUrlGetAll);
     }
 
-    public void requestData(String uri) {
+    /**
+     * Récupère toutes les annonces ave Volley et les mets dans un adaptateur pour les affichers
+     */
+    public void requestAllAnnonces(String apiUrlGetAll) {
 
-        StringRequest request = new StringRequest(uri,
+        StringRequest request = new StringRequest(apiUrlGetAll,
 
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        // On récupère les données recu par l'API Rest pour mettre a jour la liste des Annonces
                         annoncesList = AnnonceJSONParser.parseAnnoncesList(response);
+                        // Utilisation de l'adapter pour faire la liste des annonces
                         AnnoncesAdapter adapter = new AnnoncesAdapter(ActivityListeAnnonces.this, annoncesList);
+                        // Affichage de l'adapter sur la vue
                         lv.setAdapter(adapter);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
                         Toast.makeText(ActivityListeAnnonces.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -92,6 +88,32 @@ public class ActivityListeAnnonces extends AppCompatActivity
         queue.add(request);
     }
 
+    /**
+     * Gestion de la navigation du panneau de gauche
+     *
+     * @param item
+     * @return
+     */
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        // Si bouton A Propos est appuyé, démarre l'activité
+        if (id == R.id.nav_camera)
+            newIntent(ActivityAPropos.class);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    /**
+     * Gestion du clique sur le menu.
+     *
+     * @param item MenuItem
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -128,33 +150,34 @@ public class ActivityListeAnnonces extends AppCompatActivity
         }
     }
 
+    /**
+     * Ajoute le layout menu à l'ActionBar
+     *
+     * @param menu Menu
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    /**
+     * Si le bouton Retour (<-) est cliqué, on termine l'activité
+     */
+    @Override
+    public boolean onNavigateUp() {
+        finish();
+        return true;
+    }
+
+    /**
+     * Lancement d'une nouvelle activité
+     *
+     * @param activity Activité a lancer
+     */
     public void newIntent(Class activity) {
         Intent intent = new Intent(this, activity);
         startActivity(intent);
     }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            newIntent(ActivityAPropos.class);
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
 }
+

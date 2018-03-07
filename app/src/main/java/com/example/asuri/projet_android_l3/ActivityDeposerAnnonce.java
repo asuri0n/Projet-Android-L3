@@ -75,7 +75,6 @@ public class ActivityDeposerAnnonce extends AppCompatActivity {
         setContentView(R.layout.activity_deposer_annonce);
         setTitle("Déposer");
 
-
         // Affichage de la toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
