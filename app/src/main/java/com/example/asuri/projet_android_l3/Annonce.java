@@ -11,11 +11,13 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Created by thomas on 26/01/2018.
+ * Classe définissant l'objet Annonce
+ * Sérializable pour pouvoir transferer un objet Annonce entre les activités
  */
 
 public class Annonce implements Serializable {
-    //composition d'une annonce
+
+    // Attributs d'une annonce
     private String id;
     private String titre;
     private String description;
@@ -99,10 +101,15 @@ public class Annonce implements Serializable {
         return images;
     }
 
+    /**
+     * Retourne une image random de l'annonce
+     * Si pas d'images, ajoute une image par défaut et la retourne
+     * @return index de l'image
+     */
     public String getImage() {
         int size = this.images.size();
         int index;
-        if(size > 0)
+        if (size > 0)
             index = new Random().nextInt(size);
         else {
             this.addImage("https://myaco.lemans.org/GED/content/4FA6F788-4ACF-4B1A-A150-C127C75E3D14.jpg");
@@ -111,8 +118,12 @@ public class Annonce implements Serializable {
         return images.get(index);
     }
 
+    /**
+     * Ajoute les images contenues dans un JsonArray
+     * @param imagesArray array d'images
+     */
     public void setImages(JSONArray imagesArray) throws JSONException {
-        for(int i = 0; i < imagesArray.length(); i++){
+        for (int i = 0; i < imagesArray.length(); i++) {
             this.images.add(imagesArray.get(i).toString());
         }
     }
@@ -125,13 +136,17 @@ public class Annonce implements Serializable {
         return date;
     }
 
-    public String getFormatedDate(String timeStamp){
-        try{
+    /**
+     * Récupère une date au format dd MMMM yyyy
+     * @param timeStamp timeStramp
+     * @return
+     */
+    public String getFormatedDate(String timeStamp) {
+        try {
             SimpleDateFormat sdf = new SimpleDateFormat("'Publié le' dd MMMM yyyy 'à' HH:mm");
             Date netDate = (new Date(Long.parseLong(timeStamp) * 1000L));
             return sdf.format(netDate);
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             return "xx";
         }
     }

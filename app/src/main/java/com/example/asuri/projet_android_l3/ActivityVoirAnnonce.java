@@ -93,8 +93,7 @@ public class ActivityVoirAnnonce extends AppCompatActivity {
         }
 
         // Si l'email a été indiqué dans le profil ...
-        if (!Objects.equals(annonce.getEmailContact(), "") || annonce.getEmailContact() != null)
-        {
+        if (!Objects.equals(annonce.getEmailContact(), "") || annonce.getEmailContact() != null) {
             // ... alors on créer un listener sur le mail ...
             this.mailAnnonce.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -109,8 +108,7 @@ public class ActivityVoirAnnonce extends AppCompatActivity {
         }
 
         // Si le telephone a été indiqué dans le profil ...
-        if (!Objects.equals(annonce.getTelContact(), "") || annonce.getTelContact() != null)
-        {
+        if (!Objects.equals(annonce.getTelContact(), "") || annonce.getTelContact() != null) {
             // ... alors on créer un listener sur le telephone ...
             this.telAnnonce.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -163,6 +161,7 @@ public class ActivityVoirAnnonce extends AppCompatActivity {
     /**
      * Prend un objet Annonce en paramètre et affiches ses attributs sur le layout
      * En profite pour modifier le titre de l'activité pour afficher l'ID de l'annonce
+     *
      * @param annonce
      */
     private void fillAnnonceData(Annonce annonce) {
