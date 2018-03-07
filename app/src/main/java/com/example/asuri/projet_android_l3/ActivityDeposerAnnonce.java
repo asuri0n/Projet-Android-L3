@@ -45,6 +45,9 @@ import okhttp3.RequestBody;
 
 public class ActivityDeposerAnnonce extends AppCompatActivity {
 
+    // Classe singleton pour mettre les variables globales comme la clé API et l'url API
+    GlobalsVariables global = GlobalsVariables.getInstance();
+
     String prefPseudo;
     String prefMail;
     String prefTel;
@@ -66,13 +69,12 @@ public class ActivityDeposerAnnonce extends AppCompatActivity {
     Annonce annonce;
     Uri selectedimg;
 
-    String apiurl = "https://ensweb.users.info.unicaen.fr/android-api/";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deposer_annonce);
         setTitle("Déposer");
+
 
         // Affichage de la toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -186,7 +188,7 @@ public class ActivityDeposerAnnonce extends AppCompatActivity {
      */
     public void requestSaveAnnonce() {
 
-        StringRequest request = new StringRequest(Request.Method.POST, apiurl,
+        StringRequest request = new StringRequest(Request.Method.POST, global.getAPIURL(),
 
                 new Response.Listener<String>() {
                     @Override
@@ -224,7 +226,7 @@ public class ActivityDeposerAnnonce extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 // On passe en paramètre la clé de dev et la méthode
-                params.put("apikey", "21404260");
+                params.put("apikey", global.getAPIKEY());
                 params.put("method", "save");
 
                 // ainsi que les données de l'annonce a sauvegarder
@@ -270,13 +272,13 @@ public class ActivityDeposerAnnonce extends AppCompatActivity {
                 // On ajoute l'image en POST
                 .addPart(bodyImage)
                 // On passe en paramètre la clé de dev, la méthode et l'ID en Multipart
-                .addFormDataPart("apikey", "21404260")
+                .addFormDataPart("apikey", global.getAPIKEY())
                 .addFormDataPart("method", "addImage")
                 .addFormDataPart("id", annonce.getId())
                 .build();
 
         okhttp3.Request request = new okhttp3.Request.Builder()
-                .url(apiurl)
+                .url(global.getAPIURL())
                 .post(requestBody)
                 .build();
 
