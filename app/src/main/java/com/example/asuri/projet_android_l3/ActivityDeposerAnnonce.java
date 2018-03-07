@@ -4,16 +4,12 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,13 +27,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -70,22 +64,9 @@ public class ActivityDeposerAnnonce extends AppCompatActivity {
     Button uploadImage;
 
     Annonce annonce;
-
     Uri selectedimg;
-    String imageURL;
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        //ajoute les entrées de menu_test à l'ActionBar
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onNavigateUp() {
-        finish();
-        return true;
-    }
+    String apiurl = "https://ensweb.users.info.unicaen.fr/android-api/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,19 +74,22 @@ public class ActivityDeposerAnnonce extends AppCompatActivity {
         setContentView(R.layout.activity_deposer_annonce);
         setTitle("Déposer");
 
+        // Affichage de la toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
+        // Affichage du bouton retour
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // Récupération des préférences du Profil pour remplir le formulaire automatiquement
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         this.prefPseudo = prefs.getString("pseudo", "");
         this.prefMail = prefs.getString("email", "");
         this.prefTel = prefs.getString("phone", "");
 
-        if (Objects.equals(this.prefPseudo, "") || Objects.equals(this.prefMail, "") || Objects.equals(this.prefTel, "")) {
+        // Deuxième vérification. Normalement si c'est vide, il ne doit pas avoir accès a cette Activité
+        if (Objects.equals(this.prefPseudo, "") || Objects.equals(this.prefMail, "") || Objects.equals(this.prefTel, ""))
             finish();
-        }
 
         this.pseudoAnnonce = findViewById(R.id.pseudo);
         this.mailAnnonce = findViewById(R.id.mail);
@@ -128,12 +112,7 @@ public class ActivityDeposerAnnonce extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setTitle("Chargement ...");
-                // Si il y a une image a upload, alors il faut faire en sorte d'attendre l'upload de l'image avant de lancer le requestData
-                if (selectedimg != null) {
-                    uploadImage(getRealPathFromURI(selectedimg));
-                } else {
-                    requestDataSave("https://ensweb.users.info.unicaen.fr/android-api/");
-                }
+                requestSaveAnnonce();
             }
         });
 
@@ -151,9 +130,16 @@ public class ActivityDeposerAnnonce extends AppCompatActivity {
             }
         });
 
+        // Affichage image par défaut
         Picasso.with(getApplicationContext()).load(R.drawable.photo_default).into(image);
     }
 
+    /**
+     * Récupèration d'une fonction (dispo ici : https://stackoverflow.com/a/10564727) afin de récupérer le path local d'une URI
+     *
+     * @param contentUri Uri de l'image
+     * @return path local de l'image
+     */
     public String getRealPathFromURI(Uri contentUri) {
         String[] proj = {MediaStore.Images.Media.DATA};
         CursorLoader loader = new CursorLoader(getApplicationContext(), contentUri, proj, null, null, null);
@@ -165,109 +151,64 @@ public class ActivityDeposerAnnonce extends AppCompatActivity {
         return result;
     }
 
+    /**
+     * Méthode executé lors du clique sur la zone d'affichage de l'image ou sur le bouton
+     * Utilise un provider pour récuperer une image de la bibliothéque d'image de l'utilisateur.
+     * Le résultat de startActivityForResult est géré par la méthode onActivityResult()
+     */
     protected void getImage() {
         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
         startActivityForResult(intent, 1);
     }
 
+    /**
+     * Méthode récupèrant le résultat de startActivityForResult de la méthode getImage();
+     * Gestion de l'erreur et affichage de l'image selectionnée sur la page de dépot d'une annonce
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         try {
-            if (resultCode == RESULT_CANCELED) {
+            if (resultCode == RESULT_CANCELED)
                 Toast.makeText(this, "Vous n'avez pas choisi d'image", Toast.LENGTH_LONG).show();
-            } else if (resultCode == RESULT_OK) {
+            else if (resultCode == RESULT_OK) {
                 selectedimg = data.getData();
                 image.setImageBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedimg));
-            } else {
-                Toast.makeText(this, "Erreur", Toast.LENGTH_LONG).show();
-            }
+            } else
+                Toast.makeText(this, "Erreur récupèration de l'image", Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void uploadImage(String imagePath) {
-        final String IMGUR_CLIENT_ID = "0e42caf062a28e5";
-        final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
-        String encodedFile;
-        OkHttpClient client = new OkHttpClient();
+    /**
+     * Utilisation de Volley pour sauvegarder l'annonce sur l'API Rest
+     */
+    public void requestSaveAnnonce() {
 
-        try {
-            URL url = new URL("file://" + imagePath);
-
-            Bitmap bm = BitmapFactory.decodeFile(imagePath);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
-            byte[] b = baos.toByteArray();
-            encodedFile = Base64.encodeToString(b, Base64.DEFAULT);
-
-            // Use the imgur image upload API as documented at https://api.imgur.com/endpoints/image
-            RequestBody requestBody = new MultipartBody.Builder()
-                    .setType(MultipartBody.FORM)
-                    .addFormDataPart("title", "Image Projet L3 android")
-                    .addFormDataPart("image", encodedFile)
-                    .build();
-
-            okhttp3.Request request = new okhttp3.Request.Builder()
-                    .header("Authorization", "Client-ID " + IMGUR_CLIENT_ID)
-                    .url("https://api.imgur.com/3/image")
-                    .post(requestBody)
-                    .build();
-
-
-            client.newCall(request).enqueue(new Callback() {
-
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    e.printStackTrace();
-                }
-
-                @Override
-                public void onResponse(Call call, okhttp3.Response response) throws IOException {
-                    if (!response.isSuccessful()) {
-                        Log.e("erreur imgur", response.body().string());
-                    } else {
-                        try {
-                            JSONObject jsonobj = new JSONObject(response.body().string());
-                            imageURL = jsonobj.getJSONObject("data").getString("link");
-                            requestDataSave("https://ensweb.users.info.unicaen.fr/android-api/");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            });
-        } catch (IOException e) {
-            Log.e("qzd", "" + e);
-        }
-    }
-
-    public void requestDataSave(final String uri) {
-
-        StringRequest request = new StringRequest(Request.Method.POST, uri,
+        StringRequest request = new StringRequest(Request.Method.POST, apiurl,
 
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
+                            // On transforme le string reçu par l'API Rest en Objet JSON
                             JSONObject jsonObject = new JSONObject(response);
+                            // Si pas d'erreurs retournées par l'API Rest
                             if (jsonObject.getBoolean("success")) {
-                                // Pour avoir acces a l'id
+                                // On récupère les données recu par l'API Rest pour mettre a jour l'objet Annonce
                                 annonce = AnnonceJSONParser.parseAnnonce(response);
-
-                                // Si il y a une image a upload sur l'API REST
-                                if(imageURL != null){
-                                    requestDataImage(uri);
-                                } else {
-                                    // Sinon on créer l'object annonce et on le met dans transmet a l'activité VoirAnnonce
+                                // Si il y a une image de selectionnée alors on l'envoie sur l'API Rest
+                                if (selectedimg != null)
+                                    requestSaveImage();
+                                else {
+                                    // Sinon on créer l'object annonce et on le transmet a l'activité VoirAnnonce
                                     Intent intent = new Intent(getApplicationContext(), ActivityVoirAnnonce.class);
                                     intent.putExtra("annonce", annonce);
                                     startActivity(intent);
                                 }
-                            } else {
-                                Toast.makeText(getApplicationContext(), "ERREUR 1: " + jsonObject.getString("response"), Toast.LENGTH_LONG).show();
-                            }
+                            } else
+                                Toast.makeText(getApplicationContext(), "ERREUR:" + jsonObject.getString("response"), Toast.LENGTH_LONG).show();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -282,9 +223,11 @@ public class ActivityDeposerAnnonce extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
+                // On passe en paramètre la clé de dev et la méthode
                 params.put("apikey", "21404260");
                 params.put("method", "save");
 
+                // ainsi que les données de l'annonce a sauvegarder
                 params.put("titre", titreAnnonce.getText().toString());
                 params.put("description", descriptionAnnonce.getText().toString());
                 params.put("prix", prixAnnonce.getText().toString());
@@ -310,58 +253,70 @@ public class ActivityDeposerAnnonce extends AppCompatActivity {
         queue.add(request);
     }
 
-    public void requestDataImage(String uri) {
+    /**
+     * Utilisation de OKHTTP3 pour envoyer l'image sur l'API REST
+     */
+    public void requestSaveImage() {
 
-        StringRequest request = new StringRequest(Request.Method.POST, uri,
+        OkHttpClient client = new OkHttpClient();
 
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            if (jsonObject.getBoolean("success")) {
-                                annonce = AnnonceJSONParser.parseAnnonce(response);
-                                Intent intent = new Intent(getApplicationContext(), ActivityVoirAnnonce.class);
-                                intent.putExtra("annonce", annonce);
-                                startActivity(intent);
-                            } else {
-                                Toast.makeText(getApplicationContext(), "ERREUR 2: " + jsonObject.getString("response"), Toast.LENGTH_LONG).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(ActivityDeposerAnnonce.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }) {
+        // Création de la requete post pour l'image.
+        File file = new File(getRealPathFromURI(selectedimg));
+        RequestBody requsetFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part bodyImage = MultipartBody.Part.createFormData("photo", "photo", requsetFile);
+
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                // On ajoute l'image en POST
+                .addPart(bodyImage)
+                // On passe en paramètre la clé de dev, la méthode et l'ID en Multipart
+                .addFormDataPart("apikey", "21404260")
+                .addFormDataPart("method", "addImage")
+                .addFormDataPart("id", annonce.getId())
+                .build();
+
+        okhttp3.Request request = new okhttp3.Request.Builder()
+                .url(apiurl)
+                .post(requestBody)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+
             @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("apikey", "21404260");
-                params.put("method", "addImage");
-
-                params.put("id", annonce.getId());
-                params.put("photo", imageURL);
-
-                return params;
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
             }
 
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Content-Type", "multipart/form-data");
-                return params;
+            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                if (!response.isSuccessful())
+                    Toast.makeText(ActivityDeposerAnnonce.this, "ERREUR:" + response.body().string(), Toast.LENGTH_SHORT).show();
+                else {
+                    try {
+                        // On transforme le string reçu par l'API Rest en Objet JSON
+                        JSONObject jsonObject = new JSONObject(response.body().string());
+                        // Si pas d'erreurs retournées par l'API Rest
+                        if (jsonObject.getBoolean("success")) {
+                            // On créer l'object annonce et on le transmet a l'activité VoirAnnonce
+                            annonce = AnnonceJSONParser.parseAnnonce(jsonObject.toString());
+                            Intent intent = new Intent(getApplicationContext(), ActivityVoirAnnonce.class);
+                            intent.putExtra("annonce", annonce);
+                            startActivity(intent);
+                        } else
+                            Toast.makeText(getApplicationContext(), "ERREUR: " + jsonObject.getString("response"), Toast.LENGTH_LONG).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-        };
-
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(request);
+        });
     }
 
+    /**
+     * Gestion du clique sur le menu.
+     *
+     * @param item MenuItem
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -398,6 +353,31 @@ public class ActivityDeposerAnnonce extends AppCompatActivity {
         }
     }
 
+    /**
+     * Ajoute le layout menu à l'ActionBar
+     *
+     * @param menu Menu
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    /**
+     * Si le bouton Retour (<-) est cliqué, on termine l'activité
+     */
+    @Override
+    public boolean onNavigateUp() {
+        finish();
+        return true;
+    }
+
+    /**
+     * Lancement d'une nouvelle activité
+     *
+     * @param activity Activité a lancer
+     */
     public void newIntent(Class activity) {
         Intent intent = new Intent(this, activity);
         startActivity(intent);
