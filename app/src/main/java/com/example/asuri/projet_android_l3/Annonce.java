@@ -104,6 +104,7 @@ public class Annonce implements Serializable {
     /**
      * Retourne une image random de l'annonce
      * Si pas d'images, ajoute une image par défaut et la retourne
+     *
      * @return index de l'image
      */
     public String getImage() {
@@ -120,6 +121,7 @@ public class Annonce implements Serializable {
 
     /**
      * Ajoute les images contenues dans un JsonArray
+     *
      * @param imagesArray array d'images
      */
     public void setImages(JSONArray imagesArray) throws JSONException {
@@ -138,6 +140,7 @@ public class Annonce implements Serializable {
 
     /**
      * Récupère une date au format dd MMMM yyyy
+     *
      * @param timeStamp timeStramp
      * @return
      */

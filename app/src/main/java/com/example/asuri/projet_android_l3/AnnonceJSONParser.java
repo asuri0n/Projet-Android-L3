@@ -8,11 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by asuri on 04/02/2018.
+ * Classe ayant des méthodes static pour parser l'annonce recu en chaine en objet annonce
  */
 
 class AnnonceJSONParser {
 
+    /**
+     * Pour retourner une liste
+     */
     static List<Annonce> parseAnnoncesList(String content) {
 
         JSONArray annonces_arry = null;
@@ -39,6 +42,9 @@ class AnnonceJSONParser {
         }
     }
 
+    /**
+     * Pour retourner un seul objet
+     */
     static Annonce parseAnnonce(String content) {
 
         try {
@@ -54,7 +60,6 @@ class AnnonceJSONParser {
     }
 
     public static void setAttributs(Annonce annonce, JSONObject annonces_arry) throws JSONException {
-
         annonce.setId(annonces_arry.getString("id"));
         annonce.setTitre(annonces_arry.getString("titre"));
         annonce.setImages(annonces_arry.getJSONArray("images"));
