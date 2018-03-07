@@ -21,9 +21,15 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Objects;
 
 public class ActivityVoirAnnonce extends AppCompatActivity {
+
+    // Classe singleton pour mettre les variables globales comme la clé API et l'url API
+    GlobalsVariables global = GlobalsVariables.getInstance();
 
     //association avec la vue
     String idAnnonce;
@@ -41,27 +47,16 @@ public class ActivityVoirAnnonce extends AppCompatActivity {
     Annonce annonce;
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        //ajoute les entrées de menu_test à l'ActionBar
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onNavigateUp() {
-        finish();
-        return true;
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voir_annonce);
         setTitle("Chargement ...");
 
-        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+        // Affichage de la toolbar
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
+        // Affichage du bouton retour
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         this.titreAnnonce = findViewById(R.id.titreAnnonce);
@@ -74,27 +69,38 @@ public class ActivityVoirAnnonce extends AppCompatActivity {
         this.mailAnnonce = findViewById(R.id.mailAnnonce);
         this.telAnnonce = findViewById(R.id.telAnnonce);
 
+        // Récupère les variables passées en paramètre lors d'une nouvelle activité
         Bundle extras = getIntent().getExtras();
         annonce = new Annonce();
 
+
+        // Si il n'y a pas de paramètres, alors on charge une annonce aléatoire
         if (extras == null) {
-            String url = "https://ensweb.users.info.unicaen.fr/android-api/?apikey=21404260&method=randomAd";
+            String apiUrlRandomAnnonce = global.getAPIURL() + "?apikey=" + global.getAPIKEY() + "&method=randomAd";
             // Module picasso pour charger image par défault
             Picasso.with(getApplicationContext()).load(R.drawable.photo_default).into(imgAnnonce);
-            requestData(url);
+            requestRandomAnnonce(apiUrlRandomAnnonce);
         } else {
-            annonce = (Annonce) getIntent().getSerializableExtra("annonce"); //Obtaining data
+            // Sinon on récupère l'objet sérialisé Annonce
+            annonce = (Annonce) getIntent().getSerializableExtra("annonce");
+            // On affiches ses attributs sur le layout
             fillAnnonceData(annonce);
         }
+
+        // Si il y a un message en paramètre, on affiche le message en Toast
         if (getIntent().getStringExtra("message") != null) {
             Toast.makeText(ActivityVoirAnnonce.this, getIntent().getStringExtra("message"), Toast.LENGTH_SHORT).show();
         }
 
-        if (!Objects.equals(annonce.getEmailContact(), "") || annonce.getEmailContact() != null) {
+        // Si l'email a été indiqué dans le profil ...
+        if (!Objects.equals(annonce.getEmailContact(), "") || annonce.getEmailContact() != null)
+        {
+            // ... alors on créer un listener sur le mail ...
             this.mailAnnonce.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
+                    // ... qui affiche l'application mail avec le mail du propriétaire de l'annonce en destinataire
                     Uri data = Uri.parse("mailto:" + annonce.getEmailContact());
                     intent.setData(data);
                     startActivity(intent);
@@ -102,11 +108,15 @@ public class ActivityVoirAnnonce extends AppCompatActivity {
             });
         }
 
-        if (!Objects.equals(annonce.getTelContact(), "") || annonce.getTelContact() != null) {
+        // Si le telephone a été indiqué dans le profil ...
+        if (!Objects.equals(annonce.getTelContact(), "") || annonce.getTelContact() != null)
+        {
+            // ... alors on créer un listener sur le telephone ...
             this.telAnnonce.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
+                    // ... qui affiche l'application téléphone avec le numéro du propriétaire de l'annonce
                     Uri data = Uri.parse("tel:" + annonce.getTelContact());
                     intent.setData(data);
                     startActivity(intent);
@@ -115,16 +125,28 @@ public class ActivityVoirAnnonce extends AppCompatActivity {
         }
     }
 
-    public void requestData(String uri) {
+    public void requestRandomAnnonce(String uri) {
 
         StringRequest request = new StringRequest(uri,
 
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        annonce = AnnonceJSONParser.parseAnnonce(response);
-                        fillAnnonceData(annonce);
-                        setTitle("Annonce N°" + annonce.getId());
+                        try {
+                            // On transforme le string reçu par l'API Rest en Objet JSON
+                            JSONObject jsonObject = new JSONObject(response);
+                            // Si pas d'erreurs retournées par l'API Rest
+                            if (jsonObject.getBoolean("success")) {
+                                // On récupère les données recu par l'API Rest pour mettre a jour l'objet Annonce
+                                annonce = AnnonceJSONParser.parseAnnonce(response);
+                                fillAnnonceData(annonce);
+                                // On modifie le titre de l'activité pour afficher l'ID de l'annonce
+                                setTitle("Annonce N°" + annonce.getId());
+                            } else
+                                Toast.makeText(getApplicationContext(), "ERREUR:" + jsonObject.getString("response"), Toast.LENGTH_LONG).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -138,6 +160,11 @@ public class ActivityVoirAnnonce extends AppCompatActivity {
         queue.add(request);
     }
 
+    /**
+     * Prend un objet Annonce en paramètre et affiches ses attributs sur le layout
+     * En profite pour modifier le titre de l'activité pour afficher l'ID de l'annonce
+     * @param annonce
+     */
     private void fillAnnonceData(Annonce annonce) {
         setTitle("Annonce N°" + annonce.getId());
         titreAnnonce.setText(annonce.getTitre());
@@ -151,6 +178,11 @@ public class ActivityVoirAnnonce extends AppCompatActivity {
         telAnnonce.setText(annonce.getTelContact());
     }
 
+    /**
+     * Gestion du clique sur le menu.
+     *
+     * @param item MenuItem
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -187,10 +219,33 @@ public class ActivityVoirAnnonce extends AppCompatActivity {
         }
     }
 
+    /**
+     * Ajoute le layout menu à l'ActionBar
+     *
+     * @param menu Menu
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    /**
+     * Si le bouton Retour (<-) est cliqué, on termine l'activité
+     */
+    @Override
+    public boolean onNavigateUp() {
+        finish();
+        return true;
+    }
+
+    /**
+     * Lancement d'une nouvelle activité
+     *
+     * @param activity Activité a lancer
+     */
     public void newIntent(Class activity) {
         Intent intent = new Intent(this, activity);
         startActivity(intent);
     }
 }
-
-
