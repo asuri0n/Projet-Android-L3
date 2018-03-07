@@ -5,8 +5,12 @@ import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-public class ActivityMonProfil extends AppCompatActivity {
+/**
+ *  Classe Profil permettant de sauvegarder les infos de l'utilisateur.
+ *  Sauvegarde dans les préférences de l'app, permet de récuperer facilement plus tard.
+ */
 
+public class ActivityMonProfil extends AppCompatActivity {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
